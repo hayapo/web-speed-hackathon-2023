@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import { ViteEjsPlugin } from 'vite-plugin-ejs';
 import topLevelAwait from 'vite-plugin-top-level-await';
@@ -23,16 +24,17 @@ export default defineConfig(async () => {
 
   return {
     build: {
-      assetsInlineLimit: 20480,
-      cssCodeSplit: false,
-      cssTarget: 'es6',
-      minify: false,
+      assetsInlineLimit: 0,
+      cssCodeSplit: true,
+      cssTarget: 'chrome110',
+      minify: true,
       rollupOptions: {
         output: {
           experimentalMinChunkSize: 40960,
         },
       },
-      target: 'es2015',
+      sourcemap: false,
+      target: 'chrome110',
     },
     plugins: [
       react(),
@@ -43,6 +45,7 @@ export default defineConfig(async () => {
         title: '買えるオーガニック',
         videos,
       }),
+      visualizer(),
     ],
   };
 });
