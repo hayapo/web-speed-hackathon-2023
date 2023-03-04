@@ -1,8 +1,11 @@
 import classNames from 'classnames';
+import { createElement } from 'react';
 import type { FC } from 'react';
-import * as Icons from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaCheckCircle, FaPlay, FaShoppingCart, FaUser } from 'react-icons/fa';
 
 import * as styles from './Icon.styles';
+
+const Icons = { FaArrowLeft, FaArrowRight, FaCheckCircle, FaPlay, FaShoppingCart, FaUser };
 
 type Props = {
   type: keyof typeof Icons;
@@ -11,11 +14,11 @@ type Props = {
   color: string;
 };
 
-export const Icon: FC<Props> = ({ color, height, type, width }) => {
-  const Icon = Icons[type];
+export const ReactIcon: FC<Props> = ({ color, height, type, width }) => {
+  const Icon = createElement(Icons[type]);
   return (
-    <span className={classNames(type, styles.container({ color, height, width }))}>
-      <Icon />
+    <span className={classNames(styles.container({ color, height, width }))}>
+      <div>{Icon}</div>
     </span>
   );
 };
