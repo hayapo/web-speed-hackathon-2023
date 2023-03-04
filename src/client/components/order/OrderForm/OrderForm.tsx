@@ -1,6 +1,5 @@
 import { useFormik } from 'formik';
 import type { ChangeEventHandler, FC } from 'react';
-import zipcodeJa from 'zipcode-ja';
 
 import { PrimaryButton } from '../../foundation/PrimaryButton';
 import { TextInput } from '../../foundation/TextInput';
@@ -18,9 +17,9 @@ type Props = {
   onSubmit: (orderFormValue: OrderFormValue) => void;
 };
 
-const cloneDeep = (obj: object) => {
-  return JSON.parse(JSON.stringify(obj));
-};
+// const cloneDeep = (obj: object) => {
+//   return JSON.parse(JSON.stringify(obj));
+// };
 
 export const OrderForm: FC<Props> = ({ onSubmit }) => {
   const formik = useFormik<OrderFormValue>({
@@ -37,12 +36,12 @@ export const OrderForm: FC<Props> = ({ onSubmit }) => {
     formik.handleChange(event);
 
     const zipCode = event.target.value;
-    const address = [...(cloneDeep(zipcodeJa)[zipCode]?.address ?? [])];
-    const prefecture = address.shift();
-    const city = address.join(' ');
-
-    formik.setFieldValue('prefecture', prefecture);
-    formik.setFieldValue('city', city);
+    fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipCode}`)
+      .then((res) => res.json())
+      .then((data) => {
+        formik.setFieldValue('prefecture', data.results[0].address1);
+        formik.setFieldValue('city', [data.results[0].address2, data.results[0].address3]);
+      });
   };
 
   return (
