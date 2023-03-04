@@ -1,5 +1,4 @@
-import type { FC } from 'react';
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
 
 import { Layout } from '../../components/application/Layout';
 import { ProductList } from '../../components/feature/ProductList';
@@ -9,9 +8,13 @@ import { useRecommendation } from '../../hooks/useRecommendation';
 
 import * as styles from './Top.styles';
 
-export const Top: FC = () => {
+export const Top: React.FC = () => {
   const { recommendation } = useRecommendation();
   const { features } = useFeatures();
+
+  useEffect(() => {
+    document.title = '買えるオーガニック';
+  }, []);
 
   if (recommendation === undefined || features === undefined) {
     return null;
@@ -19,9 +22,6 @@ export const Top: FC = () => {
 
   return (
     <>
-      <Helmet>
-        <title>買えるオーガニック</title>
-      </Helmet>
       <Layout>
         <div>
           <ProductHeroImage product={recommendation.product} title="今週のオススメ" />

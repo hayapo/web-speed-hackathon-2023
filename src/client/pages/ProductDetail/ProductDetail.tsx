@@ -1,5 +1,4 @@
-import type { FC } from 'react';
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from '../../components/application/Layout';
@@ -20,7 +19,7 @@ import { normalizeCartItemCount } from '../../utils/normalize_cart_item';
 
 import * as styles from './ProductDetail.styles';
 
-export const ProductDetail: FC = () => {
+export const ProductDetail: React.FC = () => {
   const { productId } = useParams();
 
   const { product } = useProduct(Number(productId));
@@ -31,6 +30,12 @@ export const ProductDetail: FC = () => {
   const handleOpenModal = useOpenModal();
   const { amountInCart } = useAmountInCart(Number(productId));
   const { activeOffer } = useActiveOffer(product);
+
+  useEffect(() => {
+    if (product) {
+      document.title = product.name;
+    }
+  }, [product]);
 
   const handleSubmitReview = ({ comment }: { comment: string }) => {
     sendReview({
@@ -49,11 +54,6 @@ export const ProductDetail: FC = () => {
 
   return (
     <>
-      {product && (
-        <Helmet>
-          <title>{product.name}</title>
-        </Helmet>
-      )}
       <Layout>
         <WidthRestriction>
           <div className={styles.container()}>
