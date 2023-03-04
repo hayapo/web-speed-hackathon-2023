@@ -1,6 +1,6 @@
-# fly.toml file generated for wsh-2023 on 2023-03-04T11:00:05+09:00
+# fly.toml file generated for ws-hayapo on 2023-03-05T04:23:58+09:00
 
-app = "wsh-2023"
+app = "ws-hayapo"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
