@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-import _ from 'lodash';
 import type { ChangeEventHandler, FC } from 'react';
 import zipcodeJa from 'zipcode-ja';
 
@@ -19,6 +18,10 @@ type Props = {
   onSubmit: (orderFormValue: OrderFormValue) => void;
 };
 
+const cloneDeep = (obj: object) => {
+  return JSON.parse(JSON.stringify(obj));
+};
+
 export const OrderForm: FC<Props> = ({ onSubmit }) => {
   const formik = useFormik<OrderFormValue>({
     initialValues: {
@@ -34,7 +37,7 @@ export const OrderForm: FC<Props> = ({ onSubmit }) => {
     formik.handleChange(event);
 
     const zipCode = event.target.value;
-    const address = [...(_.cloneDeep(zipcodeJa)[zipCode]?.address ?? [])];
+    const address = [...(cloneDeep(zipcodeJa)[zipCode]?.address ?? [])];
     const prefecture = address.shift();
     const city = address.join(' ');
 
